@@ -21,6 +21,10 @@ Describe your approach in the ReadMe file's section below, as opposed to in-line
   * In the ReadMe file, modify the below section to explain your overall approach. Write as if speaking to other developers.
 
 **NOTE**: When making corrections in the SQL or R file, please also consider formatting adjustments that more closely conform to generally accepted style guidance (e.g., indentation, vertical alignment, etc.).
+
+4. Commit your edits and push your branch back to the remote repo within 1 hour
+
+*GOOD LUCK!*
   
 ## About My Submission: `[Insert your First Name, Last Name]`
 Replace with your own narrative
