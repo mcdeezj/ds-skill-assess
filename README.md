@@ -1,30 +1,96 @@
 # ds-skill-assess
+
 ## Phase II technical assessment for data scientist candidates
 
 This repository contains a short, notional example of SQL & R files designed to test your technical knowledge of basic data wrangling and version control.
 
 ### Ground Rules
-* You will have 1 hour to clone the repo, create your own branch, and push your branch back to the remote repo.
-* Please keep all work on your branch. Do not submit a pull request for main.
-* The errors are simple; do not over-think them.
-* Describe your approach in the ReadMe file's section below, as opposed to in-line comments.
+
+-   You will have 1 hour to clone the repo, create your own branch, and push your branch back to the remote repo.
+-   Please keep all work on your branch. Do not submit a pull request for main.
+-   The errors are simple; do not over-think them.
+-   Describe your approach in the ReadMe file's section below, as opposed to in-line comments.
 
 ### Instructions
-1. Clone the repo
-2. From `main`, create your own branch with `[your last name]/submission`
-3. Correct errors in the SQL and R script as follows:
-  * The SQL contains an error that will not generate correct output to be received by the R file. Please correct the SQL so that its output will match what the R file requires.
-  * The R file contains a single series of steps that could be separated into more descriptive functions or otherwise condensed to improve readability and maintainability. Please re-factor the R code to reflect cleaner, more maintainable code without altering functionality. *Please feel free to add separate function script files if you think this would help.*
-  * In the ReadMe file, modify the below section to explain your overall approach. Write as if speaking to a non-technical audience.
+
+1.  Clone the repo
+2.  From `main`, create your own branch with `[your last name]/submission`
+3.  Correct errors in the SQL and R script as follows:
+
+-   The SQL contains an error that will not generate correct output to be received by the R file. Please correct the SQL so that its output will match what the R file requires.
+-   The R file contains a single series of steps that could be separated into more descriptive functions or otherwise condensed to improve readability and maintainability. Please re-factor the R code to reflect cleaner, more maintainable code without altering functionality. *Please feel free to add separate function script files if you think this would help.*
+-   In the ReadMe file, modify the below section to explain your overall approach. Write as if speaking to a non-technical audience.
 
 **NOTE**: When making corrections in the SQL or R file, please also consider formatting adjustments that more closely conform to generally accepted style guidance (e.g., indentation, vertical alignment, etc.).
 
 **IMPORTANT: You should NOT need to create sample data and you do NOT need to compile your code to ensure it runs.** This is not a test of syntax, but of your ability to discover and streamline inefficiency in the data pipeline.
 
-4. Commit your edits and push your branch back to the remote repo within 1 hour
+4.  Commit your edits and push your branch back to the remote repo within 1 hour
 
 *GOOD LUCK!*
-  
-## About My Submission: `[Insert your First Name, Last Name]`
-Replace with your own narrative
+
+## USAREC Technical Skills Assessment
+
+### About My Submission: Lydia, Tanque
+
+**Project Objective**
+This project aims to harness comprehensive data analysis, predictive modeling, and visualization techniques to offer USAREC a thorough examination of recruitment data. The objective is to uncover insights into the factors influencing recruitment numbers, thereby enhancing recruitment strategies and facilitating data-driven decision-making. By analyzing recruitment data across various fiscal years and months, USAREC can pinpoint trends and patterns affecting applicant behavior. This understanding enables more targeted and timely recruitment strategies. Additionally, examining the relationship between recruitment units and applicant numbers helps optimize resource allocation and boosts the efficiency of recruitment campaigns.
+
+**Development Environment** 
+I leveraged RStudio as the development environment due to its ability to support R programming, SQL, python, tools that streamline the coding process such as real-time code evaluation, debugging capabilities, and seamless integration with version control systems such as git/git hub. To document and present the analysis, I employed an R Markdown file. I chose R Markdown for its ability to integrate code with narrative, allowing for the creation of comprehensive reports that combine analysis with clear explanations. This feature enhances the presentation of technical concepts and results, enhancing communication of complex insights to both technical and non-technical audiences.
+
+**Data Extraction** 
+I initiated the data extraction process by establishing a database connection, using the DBI package to provide a consistent and standardized interface for querying and retrieving data from the database management system. Due to the lack of detailed information about the database’s origin, I was unable to fully configure the R script to connect directly to the specific data source. As an alternative, I employed the RPostgres package to illustrate connecting to a relational database. This approach enhances the code by demonstrating how to establish connections with a standard interface, improving the flexibility and adaptability of the script for future use when more precise database details become available.
+
+**Data Querying**
+The applicant data frame was generated by using SQL to query and extract data for analysis. The purpose of the SQL query was to extract features from the funnel table. This includes key metrics such as: unit_id a recruiting metric that identifies the different recruitment units, providing context for comparing performance across units; fiscal_year and fiscal_month offer temporal context, allowing for the examination of recruitment trends and patterns over time; and applicants represents the number of individuals applying, which serves as the target variable for the linear regression model.
+
+    **SQL Code Errors and Improvements**
+    
+    *Grouping Error:* Initially, the SQL code encountered an error related to grouping. The query was not            correctly aggregating the data by relevant dimensions, which could lead to inaccurate or incomplete             results. This issue was addressed by ensuring that the SQL query correctly specified the columns for            grouping, which is essential for aggregating data appropriately and obtaining meaningful insights.
+    
+    *Alias Addition:* An alias was added to the SQL query to improve clarity and maintain consistency with the       corresponding R code. For example, using an alias such as applicants_data for the result of the query helps      to ensure that the dataset name matches the R code, making it easier to reference and analyze within            RStudio. This addition was particularly beneficial for aligning the database output with the R environment,      enhancing the coherence between data extraction and data analysis.
+    
+    *Formatting Afjustment:* Formatting improvements were also added to the SQL code to enhance readability and      maintainability. Vertical alignment of columns and clauses, along with the separation of query components,      provided a clearer view of the query structure. Improved indentation further helped in understanding the        logical flow and nested conditions of the query. 
+    
+Addressing the SQL code errors and adding improvements to structure and format corrected immediate issues within data retrieval. Enhancing the code also improved the overall quality of the code. By ensuring the SQL query produced accurate and well-structured data, the R code can compile with reliable inputs, facilitating accurate modeling and visualization. The formatting improvements further enhances the maintainability of the code, making it easier for future modifications and collaborations. The consistent use of aliases and clear query structure ensured that the output matched the R code's expectations. 
+
+**Data Pre-processing** 
+In the data pre-processing stage, several transformations were applied to the applicants_data to enhance its usability for statistical analysis and predictive modeling. The goal was to clean and prepare the data for modeling by addressing issues identified in the original R code. The pre-processing involved creating new columns and modifying existing features. A new column, fymo, was created by concatenating fiscal_year and fiscal_month with a hyphen, which aggregates temporal information into a single string for easier grouping and analysis. Additionally, two new columns, unit_sublevel_1 and unit_sublevel_2, derived from the unit_id using the str_sub function to provide a more granular breakdown of recruitment units. The original fiscal_year and fiscal_month columns were removed after their information was consolidated into fymo, simplifying the data set structure and reducing redundancy.
+
+The R code was refactored  by organizing it into a modular structure to maintain functionality. The prepare_data function was created to handle reading the data, pre-processing it, and preparing it for further analysis. This approach improves both readability and maintainability by clearly separating each step and incorporating descriptive comments. The revised code makes it easier to understand, maintain, and adapt for future needs. To further assess the data, descriptive statistics were generated using summary(applicants_data) and skim(applicants_data). The summary() function provides basic statistics such as minimum, maximum, mean, and quartiles, which are essential for understanding the distribution and range of the data. The skim() function delivers detailed descriptive statistics, including data types, missing values, and additional metrics, offering a comprehensive overview of the data set. These summaries are crucial for assessing data quality, identifying anomalies, and guiding subsequent analysis, ensuring that the data set is well-understood before applying more complex models.
+
+In the original R code, several issues were identified and addressed to improve the functionality and clarity of the data pre-processing. The first problem was inconsistent indentation and spacing within nested code blocks, which made it difficult to visualize the code structure and understand the logical flow. This inconsistency potentially led to confusion or errors during code maintenance and review. Additionally, the variable names used were not always descriptive enough, leading to ambiguity about their purpose.Another significant error found was the incorrect use of the coef function. The original code mistakenly referenced a non-existent function, which would have led to a compilation error if executed. This error was corrected by replacing it with the appropriate function, ensuring that the code would run correctly and generate the intended outputs.
+
+By addressing these issues, the revised R code now features consistent indentation, more descriptive variable names, modular functions, and a streamlined approach to data pre-processing. These improvements not only enhance the code's readability and maintainability but also ensure a more efficient and error-free data analysis process.
+
+**Data Modeling**
+A linear regression model was employed to analyze the relationship between the total number of applicants and various features present in the data set. The purpose of using a linear regression model was to quantify the effect of each feature on the number of applicants, providing insights into which factors are most influential in recruitment outcomes. The modeling process involved fitting the linear regression model using the lm function in R, where sum_of_applicants was the dependent variable and all other features in the data set served as independent variables. This approach allowed for the evaluation of how different predictors contribute to changes in the number of applicants.
+
+The output from the model, specifically the coefficients, provides valuable information about the strength and direction of the relationship between each predictor and the target variable. Positive coefficients indicate that an increase in the predictor is associated with an increase in the number of applicants, while negative coefficients suggest a decrease. By examining these coefficients, I identified which features have a significant impact on recruitment and how they interact with each other.
+
+**Model Performance Evaluation**
+Cross-validation was used to evaluate the robustness and generalization of the linear regression model. I chose to use cross-validation because this technique is useful for assessing how well the model performs on unseen data and ensuring that the model is not over fitted to the training data set. n this analysis, cross-validation was implemented using a 10-fold method, which divides the data set into ten subsets and iteratively trains and tests the model on these different combinations. This approach provides an evaluation of the model’s performance by averaging results across multiple iterations. This can offer a more reliable measure of the model's predictive accuracy.
+
+The use of cross-validation enhanced the model's credibility and ensured that its findings are not specific to any single subset of the data. This method improves the overall quality of the analysis by confirming that the model's results are consistent and can be generalized across different samples of recruitment data using other key metrics. The results of the cross-validation were saved and documented, providing a clear record of the model's performance metrics.
+
+**Model Visualization**
+ANOVA (Analysis of Variance) was employed to assess the overall significance of the linear regression model. It tests whether there are significant differences in the means of the dependent variable across different levels of the independent variables. This statistical test is vital for understanding if the model’s predictors collectively contribute to explaining the variance in the number of applicants. By evaluating the model’s ANOVA results, we gain insights into the model's effectiveness and the significance of the predictors. The output from ANOVA, including F-statistics and p-values, helps identify which variables significantly influence the dependent variable, thereby guiding further refinement of the model. By analyzing the ANOVA results, USAREC can determine which features are important in explaining the variability in recruitment numbers. This can improve validation of predictors and guide decisions on which variables to focus on or potentially exclude.
+
+The coefficient matrix was used to visualize the relationship between each predictor variable and the response variable. The matrix contains the coefficients of the linear regression model, which indicate the strength and direction of the association between each feature and the outcome. This matrix was crucial for understanding which predictors had the most substantial impact on the number of applicants and how they interacted with each other. By visualizing these coefficients, we can identify key variables and their contributions to the model, which is essential for interpreting the results and making informed decisions.
+
+Together, ANOVA and the coefficient matrix allow for a thorough evaluation of the model's effectiveness and the role of individual predictors. ANOVA assesses the overall model significance, while the coefficient matrix provides detailed insights into the influence of each feature. This combined analysis helps in understanding which features are critical, refining the model, and making data-driven decisions to improve recruitment strategies.
+
+**Conclusion**
+In conclusion, this project effectively utilized a combination of data querying, modeling, and visualization techniques to analyze recruitment data for USAREC. By employing SQL for data extraction and R for modeling and visualization, the analysis provided valuable insights into the factors affecting recruitment numbers. The use of cross-validation ensured the robustness of the model, while ANOVA and the coefficient matrix offered a detailed understanding of predictor significance and model performance. These analyses collectively enhance the ability to make informed, data-driven decisions, ultimately aiding USAREC in optimizing force management recruitment strategies and resource allocation.
+
+
+
+
+
+
+
+
+
+
 
