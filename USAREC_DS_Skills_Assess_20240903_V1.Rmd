@@ -1,0 +1,221 @@
+---
+title: "USAREC DS Skills Assessment submission Code"
+author: "Lydia Tanque"
+date: "2024-09-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+'rm(list = ls())' # Removed original code 
+
+# 1. Load the packages
+# require(tidyverse) # Removed function
+ 
+library(ggplot2)
+library(magrittr)
+library(dplyr)
+library(stringr)
+library(readr)
+library(caret)
+library(pheatmap)
+library(skimr)
+library(DBI) 
+library(RPostgres) 
+```
+
+```{r}
+# Create a DB connection ()
+con <- dbConnect(RPostgres::Postgres(), #Change this based on db type
+                  dbname = Sys.getenv("DB_NAME"),
+                  host = Sys.getenv("DB_HOST"),
+                  port = as.integer(Sys.getenv("DB_PORT")),
+                  user = Sys.getenv("DB_USER"),
+                  password = Sys.getenv("DB_PASSWORD"))
+```
+
+```{sql connection=con, echo=FALSE}
+-- Query database 
+SELECT 
+  unit_id, 
+  SUM(applicants) AS sum_of_applicants,
+  fiscal_year, 
+  fiscal_month
+  
+FROM 
+  funnel
+  
+GROUP BY 
+  unit_id,
+  fiscal_year, 
+  fiscal_month;
+  
+```
+
+```{r}
+# Store SQL query results in R to save as applicants.csv
+results <- dbGetQuery
+(con, "
+
+  SELECT 
+    unit_id, 
+    SUM(applicants) AS sum_of_applicants,
+    fiscal_year, 
+    fiscal_month
+    
+  FROM 
+    funnel
+    
+  GROUP BY 
+    unit_id,
+    fiscal_year, 
+    fiscal_month;
+    
+  ")
+
+# Save SQL results to a CSV file
+write_csv(results, 'C:/Users/lysad/OneDrive/Desktop/Viper/USAREC DS Technical Assessment/Code Output/sql_applicants.csv')
+
+```
+
+
+```{r}
+# sql-query-from-database.sql will provide one row for each fiscal_year, fiscal_month, and each unit_id. 
+#
+# Assume the output is called applicants.csv
+#
+# The most important column is called sum_of_applicants. Like this:
+#
+# fiscal_year fiscal_month  unit_id sum_of_applicants
+#        2024           01       6F               735
+#        2024           02       5J              1132
+#        2024           01       2B               467
+#        2024           02       6C               943
+# ...3566 more rows
+```
+
+```{r}
+
+# 3. Get the data ready for the model
+
+# Define the file path for the CSV
+file_path <- 'C:/Users/lysad/OneDrive/Desktop/Viper/USAREC DS Technical Assessment/Code Output/sql_applicants.csv'
+
+# Function to read and prepare data
+prepare_data <- function(file_path) {
+  applicants_data <- readr::read_csv(file_path)
+  
+  # Data preprocessing
+  applicants_data <- applicants_data %>%
+    mutate(fymo = paste(fiscal_year, fiscal_month, sep = '-'),
+           unit_sublevel_1 = str_sub(unit_id, 1, 1),
+           unit_sublevel_2 = str_sub(unit_id, 2, 1)) %>%
+    select(-fiscal_year, -fiscal_month)
+  
+  return(applicants_data)
+}
+
+# Prepare the data
+applicants_data <- prepare_data(file_path)
+
+# Summary of the data
+summary(applicants_data)
+
+# Detailed descriptive statistics
+skim(applicants_data)
+```
+
+```{r}
+# 4. Fit the model and write the coefficients
+
+fit_and_save_model <- function(data, output_file) 
+  {
+  # Fit the model
+  model <- lm(sum_of_applicants ~ ., data = data)
+  
+  # Plot the model
+  plot(model)
+  
+  # Extract coefficients
+  beta_fits <- coef(model)
+  
+  # Save coefficients to CSV
+  write_csv(data.frame(beta_fits), output_file)
+  
+  return(list(model = model, beta_fits = beta_fits))
+ }
+
+# Model output file path
+output_file <- 'C:/Users/lysad/OneDrive/Desktop/Viper/USAREC DS Technical Assessment/Code Output/applicants_beta_fitted.csv'
+
+# Fit the model and generate coefficients
+model_results <- fit_and_save_model(applicants_data, output_file)
+
+# Extract model and beta_fits from results
+model <- model_results$model
+beta_fits <- model_results$beta_fits
+
+```
+
+```{r}
+
+# Convert to a heatmap correlation matrix of coefficients 
+coeff_matrix <- matrix(beta_fits, 
+                       nrow = 1, 
+                       dimnames = list("Coefficients", names(beta_fits)))
+
+# Create heatmap
+pheatmap(coeff_matrix, 
+         cluster_rows = FALSE, 
+         cluster_cols = FALSE, 
+         display_numbers = TRUE)
+
+```
+
+```{r}
+
+# Perform ANOVA
+anova_results <- anova(model)
+
+# Print ANOVA results
+print(anova_results)
+
+```
+
+
+```{r}
+
+# 5. Cross-validation
+
+validate_model <- function(data) 
+  {
+  train_control <- trainControl(method = "cv", 
+                                number = 10)
+
+  cv_applicants_model <- train(sum_of_applicants ~ ., 
+                    data = data, method = "lm", 
+                    trControl = train_control)
+  
+  return(cv_applicants_model)
+ }
+
+# Perform cross-validation
+cv_applicants_model_results <- validate_model(applicants_data)
+
+# Print cross-validation results
+print(cv_applicants_model_results)
+
+# Save cross-validation results to CSV
+cv_applicants_model_results <- as.data.frame(cv_applicants_model_results$results)
+
+output_cv_file <- 'C:/Users/lysad/OneDrive/Desktop/Viper/USAREC DS Technical Assessment/Code Output/cv_applicants_model_results.csv'
+
+write_csv(cv_applicants_model_results, output_cv_file)
+
+#End
+
+```
+
+
+
