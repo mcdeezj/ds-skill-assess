@@ -27,3 +27,4 @@ This repository contains a short, notional example of SQL & R files designed to 
   
 ## About My Submission: `Rebekah McNichol`
 I was rather off my feet with this one. I had brushed up on Pandas and then saw it was R, and of course that was rustier. 
+I am also less experienced with GitHub having mostly played with simple branching in terminals. 
