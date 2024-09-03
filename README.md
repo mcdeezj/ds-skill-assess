@@ -25,6 +25,18 @@ This repository contains a short, notional example of SQL & R files designed to 
 
 *GOOD LUCK!*
   
-## About My Submission: `[Insert your First Name, Last Name]`
-Replace with your own narrative
+## About My Submission: `[Joseph, Janicki]`
+I started by looking at what the R script needed from the SQL File. The required information included the unit ID, fiscal year, and fiscal month. Upon checking the SQL script, I noticed that it had a SELECT and FROM clause, which were supposed to select the ID, year, and month, and also add up the total number of applicants for each combination of the ID, year, and month. However, the code wasn't written in a reader-friendly way, and the part that calculated the total number of applicants didn't provide the result in the format the R script was expecting. The GROUP BY statement in the SQL query was supposed to group the results by unique instances of what was listed in the section below it. It already did this with the ID, but it didn’t group the results by unique years or months. I made changes to fix this issue.
 
+Moving on to the R script, I immediately noticed that the comments indicated three main tasks: "Load packages," "Prepare data for the model," and "Fit the model and write the coefficients." 
+The comments provided a clear outline of tasks that could be turned into units of code (modular pieces of code, also known as functions).
+
+Loading packages didn’t need to be part of this process, but the other two tasks could be made into functions.
+
+The first function, which I named load_and_prepare_data (using a naming style consistent with the rest of the code), will load the data and prepare it. 
+This function loads the file and creates new columns by using the mutate() method to combine columns, essentially concatenating them.
+
+The second function will fit a linear regression model to the data and save the results. 
+In simpler terms, it will train a predictive model using the data prepared by the load_and_prepare_data function and then save the results in a file format called CSV (Comma-Separated Values).
+
+Once these functions are created, it’s just a matter of calling them. The data prepared by the first function is stored in a variable and then passed to the second function for training and saving.
