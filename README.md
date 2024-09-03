@@ -25,6 +25,5 @@ This repository contains a short, notional example of SQL & R files designed to 
 
 *GOOD LUCK!*
   
-## About My Submission: `[Insert your First Name, Last Name]`
-Replace with your own narrative
-
+## About My Submission: `Rebekah McNichol`
+I was rather off my feet with this one. I had brushed up on Pandas and then saw it was R, and of course that was rustier. 
