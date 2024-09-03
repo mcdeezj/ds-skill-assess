@@ -28,3 +28,4 @@ This repository contains a short, notional example of SQL & R files designed to 
 ## About My Submission: `Rebekah McNichol`
 I was rather off my feet with this one. I had brushed up on Pandas and then saw it was R, and of course that was rustier. 
 I am also less experienced with GitHub having mostly played with simple branching in terminals. 
+I was able to look at the SQL and find the error, but with the R code I would generally start by running code to see what errors were popping up. I have not had a great deal of working with others code. A step I have anxious to test, due to lack of experience. but generally running code gives me an idea of what might be broken, either typographically or syntatically.
