@@ -32,7 +32,7 @@ applicants <- applicants %>%
   dplyr::mutate(unit_sublevel_1 = stringr::str_sub(unit_id, 1, 1))
 
 applicants <- applicants %>%
-  dplyr::mutate(unit_sublevel_2 = stringr::str_sub(unit_id, 2, 1))
+  dplyr::mutate(unit_sublevel_2 = stringr::str_sub(unit_id, 2, 2))
 
 applicants <- applicants %>%
   dplyr::select(-c(fiscal_year, fiscal_month))
