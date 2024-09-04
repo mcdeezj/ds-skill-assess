@@ -3,7 +3,7 @@
 
 SELECT 
   unit_id, 
-  SUM(applicants), 
+  SUM(applicants) AS total_applicants, 
   fiscal_year, 
   fiscal_month
 FROM 
@@ -12,4 +12,3 @@ GROUP BY
   unit_id, 
   fiscal_year, 
   fiscal_month;
-
