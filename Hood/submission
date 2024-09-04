@@ -1,0 +1,14 @@
+-- Developer: Hood,Alec --
+
+
+SELECT 
+  unit_id, 
+  SUM(applicants) AS total_applicants, 
+  fiscal_year, 
+  fiscal_month
+FROM 
+  funnel
+GROUP BY 
+  unit_id, 
+  fiscal_year, 
+  fiscal_month;
